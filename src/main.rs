@@ -1,8 +1,10 @@
 mod projects;
+mod project_html;
 
 use std::sync::Arc;
 use EasyWebsiteBuilder2::page::Page;
 use EasyWebsiteBuilder2::website::Website;
+use crate::project_html::create_project_html;
 use crate::projects::{Category, CategoryId, CategoryManager, CentralManager, Project, ProjectId, ProjectManager};
 
 #[tokio::main]
@@ -73,31 +75,7 @@ async fn main() {
           .map(|c| c.name.as_str())
           .unwrap_or("Unknown");
 
-        let html = format!(
-            r#"
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <title>{name}</title>
-                <link rel="stylesheet" href="../styles.css">
-            </head>
-            <body>
-            {header}
-            <h1>{name}</h1>
-            <p><strong>Category:</strong> {category}</p>
-            <p>{description}</p>
-            <p><a href="{link}" target="_blank">Visit project</a></p>
-            {footer}
-            </body>
-            </html>"#,
-            name = project.name,
-            category = category_name,
-            description = project.description,
-            link = project.link,
-        );
-
-        website.add_page(Page::new_from_html_str(&format!("/project/{}", id), &html, 0));
+        website.add_page(Page::new_from_html_str(&format!("/project/{}", id), &create_project_html(project, id, header, footer), 0));
     }
 
 

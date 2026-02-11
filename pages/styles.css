@@ -113,6 +113,26 @@ h1, h2, h3 {
     background-color: var(--accent-hover);
 }
 
+.return {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--accent);
+    color: var(--button-text-color);
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.return:hover {
+    background-color: var(--accent);
+    transform: scale(1.05);
+}
+
 footer {
     background-color: var(--footer-bg);
     color: var(--muted-color);
@@ -155,23 +175,34 @@ footer p {
 }
 
 .carousel-wrapper {
+    position: relative;
     overflow: hidden;
     width: 100%;
 }
 
 .carousel {
     display: flex;
-    gap: 1.5rem;
     padding: 1rem 0;
+    width: max-content;
+    will-change: transform;
+    animation: scroll 50s linear infinite;
 }
 
-.carousel::-webkit-scrollbar {
-    display: none;
+@keyframes scroll {
+    from {
+        transform: translateX(25%);
+    }
+    to {
+        transform: translateX(-25%);
+    }
+}
+
+.carousel:hover {
+    animation-play-state: paused;
 }
 
 .project-card {
     min-width: 300px;
-    background: #111;
     border-radius: 12px;
     text-align: center;
     text-decoration: none;
@@ -189,4 +220,19 @@ footer p {
     height: 200px;
     object-fit: cover;
     border-radius: 10px;
+}
+
+.vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+.left {
+    text-align: left;
+}
+
+.top-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
