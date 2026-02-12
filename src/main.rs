@@ -1,9 +1,11 @@
 mod projects;
 mod project_html;
+mod categories_html;
 
 use std::sync::Arc;
 use EasyWebsiteBuilder2::page::Page;
 use EasyWebsiteBuilder2::website::Website;
+use crate::categories_html::create_category_html;
 use crate::project_html::create_project_html;
 use crate::projects::{Category, CategoryId, CategoryManager, CentralManager, Project, ProjectId, ProjectManager};
 
@@ -16,7 +18,6 @@ async fn main() {
         Page::new_from_html_str("/404", include_str!("../pages/404.html"), 0));
     website
       .add_page(Page::new_css("/styles.css", include_str!("../pages/styles.css")))
-      .add_page(Page::new_from_html_str("/projects", include_str!("../pages/categories.html"), 0))
       .add_page(Page::new_from_html_str("/about", include_str!("../pages/about.html"), 0))
       .add_page(Page::new_png("/project.png", Vec::from(include_bytes!("../pages/project.png"))));
 
@@ -25,59 +26,12 @@ async fn main() {
 
     let manager = create_central_manager();
 
-    for (id, category) in manager.category_manager.categories.iter().enumerate() {
-        let mut projects_html = String::new();
-
-        for project_id in &category.projects {
-            if let Some(project) = manager.project_manager.get(*project_id) {
-                projects_html.push_str(&format!(
-                    r#"<li><a href="/project/{}">{}</a></li>"#,
-                    project_id.0,
-                    project.name
-                ));
-            }
-        }
-
-        let html = format!(
-            r#"
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <title>Category: {name}</title>
-            <link rel="stylesheet" href="../styles.css">
-        </head>
-        <body>
-        {header}
-        <h1>Category: {name}</h1>
-        <ul>
-            {projects}
-        </ul>
-        {footer}
-        </body>
-        </html>
-        "#,
-            name = category.name,
-            projects = projects_html,
-        );
-
-        website.add_page(Page::new_from_html_str(
-            &format!("/category/{}", id),
-            &html,
-            0,
-        ));
-    }
+    let category = create_category_html(&manager.category_manager.categories, &manager.project_manager.projects, header, footer);
+    website.add_page(Page::new_from_html_str("/projects", &category, 0));
 
     for (id, project) in manager.project_manager.projects.iter().enumerate() {
-        let category_name = manager
-          .category_manager
-          .get(project.category_id)
-          .map(|c| c.name.as_str())
-          .unwrap_or("Unknown");
-
         website.add_page(Page::new_from_html_str(&format!("/project/{}", id), &create_project_html(project, id, header, footer), 0));
     }
-
 
     website.start([0, 0, 0, 0], 8080).await;
 }
@@ -85,22 +39,109 @@ async fn main() {
 fn create_central_manager() -> Arc<CentralManager> {
     let project_manager = Arc::new(ProjectManager {
         projects: vec![
+            //Game
+
             Project {
-                name: "Example Project".into(),
-                pictures: "example.png".into(),
+                name: "A Corporate World".into(),
+                pictures: "project".into(),
                 description: "This is an example project.".into(),
                 link: "https://example.com".into(),
                 category_id: CategoryId(0),
             },
+            Project {
+                name: "Corporate World Builder".into(),
+                pictures: "project".into(),
+                description: "This is an example project.".into(),
+                link: "https://example.com".into(),
+                category_id: CategoryId(0),
+            },
+            Project {
+                name: "Top Down School".into(),
+                pictures: "project".into(),
+                description: "This is an example project.".into(),
+                link: "https://example.com".into(),
+                category_id: CategoryId(0),
+            },
+            Project {
+                name: "World Peace 2".into(),
+                pictures: "project".into(),
+                description: "This is an example project.".into(),
+                link: "https://example.com".into(),
+                category_id: CategoryId(0),
+            },
+            Project {
+                name: "Bayograde 2".into(),
+                pictures: "project".into(),
+                description: "This is an example project.".into(),
+                link: "https://example.com".into(),
+                category_id: CategoryId(0),
+            },
+            Project {
+                name: "Bayograde 1".into(),
+                pictures: "project".into(),
+                description: "This is an example project.".into(),
+                link: "https://example.com".into(),
+                category_id: CategoryId(0),
+            },
+            Project {
+                name: "Better Civ".into(),
+                pictures: "project".into(),
+                description: "This is an example project.".into(),
+                link: "https://example.com".into(),
+                category_id: CategoryId(0),
+            },
+
+            //Web
+
+            Project {
+                name: "Bayograde Web".into(),
+                pictures: "project".into(),
+                description: "This is an example project.".into(),
+                link: "https://example.com".into(),
+                category_id: CategoryId(0),
+            },
+            Project {
+                name: "Flashcards CrossPlatform".into(),
+                pictures: "project".into(),
+                description: "This is an example project.".into(),
+                link: "https://example.com".into(),
+                category_id: CategoryId(0),
+            },
+            Project {
+                name: "Portfolio".into(),
+                pictures: "project".into(),
+                description: "This is an example project.".into(),
+                link: "https://example.com".into(),
+                category_id: CategoryId(0),
+            },
+            Project {
+                name: "Website Builder".into(),
+                pictures: "project".into(),
+                description: "This is an example project.".into(),
+                link: "https://example.com".into(),
+                category_id: CategoryId(0),
+            },
+
+            //Software
+
+            Project {
+                name: "Flashcards Android".into(),
+                pictures: "project".into(),
+                description: "This is an example project.".into(),
+                link: "https://example.com".into(),
+                category_id: CategoryId(0),
+            },
+
+            //Engines
+
         ],
     });
 
     let category_manager = Arc::new(CategoryManager {
         categories: vec![
-            Category {
-                name: "Web".into(),
-                projects: vec![ProjectId(0)],
-            },
+            Category::new("Game", vec![0,1,2,3,4,5,6]),
+            Category::new("Web", vec![8,9,10]),
+            Category::new("Software", vec![11]),
         ],
     });
 

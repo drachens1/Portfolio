@@ -13,10 +13,24 @@ pub struct Project {
     pub link: String,
     pub category_id: CategoryId,
 }
+impl Project {
+    pub fn new(name: impl Into<String>, pictures: impl Into<String>, description: impl Into<String>, link: impl Into<String>, category_id: CategoryId) -> Self {
+        Project { name: name.into(), pictures: pictures.into(), description: description.into(), link: link.into(), category_id }
+    }
+}
 
 pub struct Category {
     pub name: String,
     pub projects: Vec<ProjectId>
+}
+impl Category {
+    pub fn new(name: impl Into<String>, projects_u8: Vec<u8>) -> Self {
+        let mut projects = Vec::new();
+        for project in projects_u8 {
+            projects.push(ProjectId(project));
+        }
+        Category { name: name.into(), projects }
+    }
 }
 
 pub struct CategoryManager {
