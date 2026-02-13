@@ -21,6 +21,7 @@ pub fn create_project_html(project: &Project, i: usize, header: &str, footer: &s
          <p></p>
          <a href="../projects" class = "return">return</a>
          </div>
+         <p></p>
          <div class= "center">
          			<div class="vertical">
 								<h1 class = "center"><u>{name}</u></h1>
