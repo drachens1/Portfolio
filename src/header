@@ -1,8 +1,8 @@
 <header class="header-container">
     <div class = "top-center">
         <nav class="nav-links">
-            <a href="/">Projects</a>
-            <a href="/about">About Me</a>
+            <a href="/">PROJECTS</a>
+            <a href="/about">ABOUT ME</a>
         </nav>
     </div>
     <p></p>

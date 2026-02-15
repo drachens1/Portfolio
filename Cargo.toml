@@ -6,6 +6,7 @@ edition = "2024"
 [dependencies]
 EasyWebsiteBuilder2 = { path = "../EasyWebsiteBuilder2" }
 tokio = { version = "1.49.0", features = ["rt-multi-thread", "macros"]}
+rust-embed = "8.11.0"
 
 [profile.dev]
 opt-level = 0
@@ -21,4 +22,3 @@ lto = "thin"
 codegen-units = 1
 panic = "abort"
 strip = "symbols"
-

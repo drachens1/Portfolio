@@ -11,47 +11,42 @@ pub fn create_project_html(
 	let description = project.description.as_str();
 	let link = project.link.as_str();
 
-	// Generate gallery images
-	let images_html = project
-		.pictures
-		.iter()
+	let images_html = project.pictures.iter()
 		.map(|img| {
-			format!(r#"<img class="gallery-image" src="/{}.png" alt="{}">"#, img, name)
+			format!(r#"<img class="gallery-image" src="/{}.webp" alt="{name}" width="400" height="300">"#, img)
 		})
 		.collect::<Vec<_>>()
 		.join("\n");
 
-	format!(r##"
-<!DOCTYPE html>
+	format!(r##"<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{name}</title>
-    <link rel="stylesheet" href="../styles.css">
+
+    <link rel="preload" href="/styles.css" as="style" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/styles.css"></noscript>
 </head>
 <body>
 {header}
-
-<div class="left">
-    <p></p>
-    <a href="../" class="return">return</a>
-</div>
-
-<p></p>
-
-<div class="center">
-    <div class="vertical">
-        <h1 class="center"><u>{name}</u></h1>
-
-        <div class="gallery">
-            {images_html}
-        </div>
-
-        <a href="{link}" class="center-nav-link a">Github</a>
-        <p class="center">{description}</p>
+<main>
+    <div class="left">
+        <a href="../" class="return">return</a>
     </div>
-</div>
 
+    <div class="center">
+        <div class="vertical">
+            <h1><u>{name}</u></h1>
+
+            <div class="gallery">
+                {images_html}
+            </div>
+
+            <b><a href="{link}" class="center-nav-link">Github Src Code</a></b>
+            <p>{description}</p>
+        </div>
+    </div>
+</main>
 {footer}
 </body>
 </html>
