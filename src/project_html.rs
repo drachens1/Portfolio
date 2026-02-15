@@ -19,7 +19,7 @@ pub fn create_project_html(project: &Project, i: usize, header: &str, footer: &s
          {header}
          <div class="left">
          <p></p>
-         <a href="../projects" class = "return">return</a>
+         <a href="../" class = "return">return</a>
          </div>
          <p></p>
          <div class= "center">
