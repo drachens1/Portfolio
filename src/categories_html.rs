@@ -12,7 +12,7 @@ pub fn create_category_carousel_html(
 		let project = &projects[project_id.0 as usize];
 		let name = project.name.clone();
 		let id = project_id.0 as usize;
-		let image = project.pictures.clone();
+		let image = project.pictures.get(0).unwrap();
 
 		project_html.push_str(&format!(
 			r#"

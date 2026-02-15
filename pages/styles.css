@@ -250,3 +250,50 @@ footer p {
     left: 50%;
     transform: translateX(-50%);
 }
+
+.left-btn {
+    left: -50px;
+}
+
+.right-btn {
+    right: -50px;
+}
+
+.carousel-btn:hover {
+    background-color: var(--accent-hover);
+}
+
+.like-button {
+    margin-top: 15px;
+    padding: 8px 16px;
+    background-color: var(--success);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+}
+
+.like-button:hover {
+    background-color: var(--success-hover);
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.gallery-image {
+    width: 300px;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.gallery-image:hover {
+    transform: scale(1.05);
+}

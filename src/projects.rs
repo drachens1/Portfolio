@@ -9,14 +9,18 @@ pub struct ProjectId(pub u8);
 #[derive(Clone)]
 pub struct Project {
     pub name: String,
-    pub pictures: String,
+    pub pictures: Vec<String>,
     pub description: String,
     pub link: String,
     pub category_id: CategoryId,
 }
 impl Project {
     pub fn new(name: impl Into<String>, pictures: impl Into<String>, description: impl Into<String>, link: impl Into<String>) -> Self {
-        Project { name: name.into(), pictures: pictures.into(), description: description.into(), link: link.into(), category_id: CategoryId(0) }
+        Project { name: name.into(), pictures: vec![pictures.into()], description: description.into(), link: link.into(), category_id: CategoryId(0) }
+    }
+
+    pub fn new_pictures(name: impl Into<String>, pictures: Vec<impl Into<String>>, description: impl Into<String>, link: impl Into<String>) -> Self {
+        Project { name: name.into(), pictures: pictures.into_iter().map(|picture| picture.into()).collect(), description: description.into(), link: link.into(), category_id: CategoryId(0) }
     }
 }
 
