@@ -4,9 +4,17 @@ use crate::projects::{Category, Project};
 pub fn create_category_carousel_html(
 	category: &Category,
 	projects: &Vec<Project>,
-	_i: usize,
+	i: usize,
 ) -> String {
 	let mut project_html = String::new();
+
+	let priority = if i == 0 {
+		r#"fetchpriority="high""#
+	} else if i == 1 {
+		r#"fetchpriority="medium""#
+	} else {
+		r#"loading="lazy" fetchpriority="low""#
+	};
 
 	for project_id in &category.projects {
 		let project = &projects[project_id.0 as usize];
@@ -18,7 +26,7 @@ pub fn create_category_carousel_html(
 			r#"
 			<a class="project-card" href="/project/{id}">
 					<div class="image-wrapper">
-							<img src="/{image}.webp" alt="{name}">
+							<img src="/{image}.webp" alt="{name}" width="400" height="300" {priority} decoding="async">
 					</div>
 					<span>{name}</span>
 			</a>
@@ -66,10 +74,9 @@ pub fn create_category_html(
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Projects</title>
-
-    <link rel="preload" href="/styles.css" as="style" onload="this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="/styles.css"></noscript>
+		<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 {header}

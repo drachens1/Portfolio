@@ -11,9 +11,15 @@ pub fn create_project_html(
 	let description = project.description.as_str();
 	let link = project.link.as_str();
 
+	let link_html = if name == "A CORPORATE WORLD" {
+		r#""#
+	} else {
+		&format!(r#"<b><a href="{link}" class="center-nav-link">Github Src Code</a></b>"#)
+	};
+
 	let images_html = project.pictures.iter()
 		.map(|img| {
-			format!(r#"<img class="gallery-image" src="/{}.webp" alt="{name}" width="400" height="300">"#, img)
+			format!(r#"<img class="gallery-image" src="/{}.webp" alt="{name}" width="400" height="300" loading="lazy" decoding="async">"#, img)
 		})
 		.collect::<Vec<_>>()
 		.join("\n");
@@ -22,10 +28,9 @@ pub fn create_project_html(
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{name}</title>
-
-    <link rel="preload" href="/styles.css" as="style" onload="this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="/styles.css"></noscript>
+		<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 {header}
@@ -42,7 +47,7 @@ pub fn create_project_html(
                 {images_html}
             </div>
 
-            <b><a href="{link}" class="center-nav-link">Github Src Code</a></b>
+            {link_html}
             <p>{description}</p>
         </div>
     </div>
