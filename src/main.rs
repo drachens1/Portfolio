@@ -18,22 +18,21 @@ async fn main() {
 
     let category = create_category_html(&manager.category_manager.categories, &manager.project_manager.projects, header, footer);
 
-    let mut website = Website::new(
-        Page::new_from_html_str("/", &category, 0),
-        Page::new_from_html_str("/404", include_str!("../pages/404.html"), 0));
-    website
-      .add_page(Page::new_css("/styles.css", include_str!("../pages/styles.css")))
-      .add_page(Page::new_from_html_str("/about", include_str!("../pages/about.html"), 0));
+    let website = Website::new("logs",
+        Page::new_html("/", &category),
+        Page::new_html("/404", include_str!("../pages/404.html")));
+    website.add_page(Page::new_css("/styles.css", include_str!("../pages/styles.css"))).await;
+    website.add_page(Page::new_html("/about", include_str!("../pages/about.html"))).await;
 
 
     for (id, project) in manager.project_manager.projects.iter().enumerate() {
-        website.add_page(Page::new_from_html_str(&format!("/project/{}", id), &create_project_html(project, id, header, footer), 0));
+        website.add_page(Page::new_html(&format!("/project/{}", id), &create_project_html(project, id, header, footer))).await;
         for picture in &project.pictures {
-            website.add_page(Page::new_webp(format!("/{}.webp",picture), Pages::get(&format!("{picture}.webp")).unwrap().data.to_vec()));
+            website.add_page(Page::new_webp(format!("/{}.webp",picture), Pages::get(&format!("{picture}.webp")).unwrap().data.to_vec())).await;
         }
     }
 
-    website.start([0, 0, 0, 0], 8080).await;
+    website.start([0, 0, 0, 0], 3001).await;
 }
 
 #[derive(rust_embed::RustEmbed)]
