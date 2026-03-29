@@ -26,11 +26,11 @@ pub fn create_category_carousel_html(
 			r#"
 			<a class="project-card" href="/project/{id}">
 					<div class="image-wrapper">
-							<img src="/{image}.webp" alt="{name}" width="400" height="300" {priority} decoding="async">
+							<img src="/{image}.webp" alt="{name}" {priority} decoding="async">
+							<span class="overlay-text">{name}</span>
 					</div>
-					<span>{name}</span>
 			</a>
-        "#
+      "#
 		));
 	}
 

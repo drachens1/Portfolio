@@ -19,14 +19,14 @@ async fn main() {
     let category = create_category_html(&manager.category_manager.categories, &manager.project_manager.projects, header, footer);
 
     let website = Website::new("logs",
-        Page::new_html("/", &category),
-        Page::new_html("/404", include_str!("../pages/404.html")));
+        Page::new_html("/", &category).check(),
+        Page::new_html("/404", include_str!("../pages/404.html")).check());
     website.add_page(Page::new_css("/styles.css", include_str!("../pages/styles.css"))).await;
-    website.add_page(Page::new_html("/about", include_str!("../pages/about.html"))).await;
+    website.add_page(Page::new_html("/about", include_str!("../pages/about.html")).check()).await;
 
 
     for (id, project) in manager.project_manager.projects.iter().enumerate() {
-        website.add_page(Page::new_html(&format!("/project/{}", id), &create_project_html(project, id, header, footer))).await;
+        website.add_page(Page::new_html(&format!("/project/{}", id), &create_project_html(project, id, header, footer)).check()).await;
         for picture in &project.pictures {
             website.add_page(Page::new_webp(format!("/{}.webp",picture), Pages::get(&format!("{picture}.webp")).unwrap().data.to_vec())).await;
         }
@@ -56,7 +56,7 @@ fn create_central_manager() -> Arc<CentralManager> {
                 <p>The monumental coding project that got me into coding. Bayograde is a complete war game inside Minecraft with troops, research factories and entire alliance systems. I created it to combine my passions of war games, Minecraft and coding. It is my oldest project that I have had on GitHub since I started it in August 2024.</p>
 <p>It is written in java using the Minestom framework and it totals 20,000 source code lines according to Statistic; I worked on it with another person although they didn’t commit that much.</p>
 <p>It is still a very nostalgic project for me since it also taught me a lot about modelling in blockbench, although it isn’t my oldest coding project, but it is the oldest one, I still have access to.</p>", "https://github.com/drachens1/Bayograde"),
-                Project::new("RUSTIFIEDWORLDPEACE", "rustified_world_peace", "This was one of my first bigger, rust projects. And it included porting my world peace into rust on macroquad. Their are different versions their is one of it in macroquad, and one in my own 2d game engine.", "https://github.com/drachens1/RustifiedWorldPeace3"),
+                Project::new("RUSTIFIED WORLD PEACE", "rustified_world_peace", "This was one of my first bigger, rust projects. And it included porting my world peace into rust on macroquad. Their are different versions their is one of it in macroquad, and one in my own 2d game engine.", "https://github.com/drachens1/RustifiedWorldPeace3"),
             ]),
 
             Category::new_project("WEB", &mut project_manager, CategoryId(1), vec![
